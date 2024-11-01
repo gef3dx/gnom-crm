@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="is-hero-bar">
+  <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <h1 class="title">
+      {{ product.name }}
+    </h1>
+    <a class="button white border-gray-300" href="javascript:history.back()">Вернуться назад</a>
+  </div>
+</section>
+
+<section class="section main-section">
+   <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            <span class="icon"><i class="mdi mdi-information-slab-circle-outline"></i></span>
+            Информация о продукте
+          </p>
+        </header>
+        <div class="card-content">
+          <div class="image mx-auto">
+            <img width="100%" src="/media/{{product.image}}" alt="{{product.name}}" />
+          </div>
+          <hr>
+          <div class="field">
+            <label class="label">Автор:</label>
+            <div class="control">
+              <p>{{ product.author }}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="field">
+            <label class="label">Описание:</label>
+            <div class="control">
+              <p>{{ product.discription}}</p>
+            </div>
+          </div>
+          {% if product.status == 'На складе' %}
+              <hr>
+              <div class="field">
+                <label class="label">Склад:</label>
+                <div class="control">
+                    {% if product.sklad %}
+                        <p>{{product.sklad}}</p>
+                    {% else %}
+                        <p>Склад не указан</p>
+                    {% endif %}
+                </div>
+              </div>
+          {% endif %}
+        </div>
+      </div>
+</section>
+{% endblock %}

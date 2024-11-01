@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="is-hero-bar">
+  <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <h1 class="title">
+      Пользователи
+    </h1>
+    <a href="{% url 'useraddpage' %}" class="button blue">Добавить пользователя</a>
+  </div>
+</section>
+        <section class="section main-section">
+            <div class="card has-table">
+              <div class="card-content">
+                <table>
+                  <thead>
+                  <tr>
+                    <th>E-MAIL:</th>
+                    <th>Роль:</th>
+                    <th>Имя:</th>
+                    <th>Бонусы:</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in users %}
+                  <tr>
+                    <td data-label="E-mail:">
+                        <div class="buttons nowrap">
+                              {{ user.email }}
+                        </div>
+                    </td>
+                    <td data-label="Роль:">
+                        <div class="buttons nowrap">
+                              {{ user.role }}
+                        </div>
+                    </td>
+                    <td data-label="Имя:">
+                        <div class="buttons nowrap">
+                              {{ user.first_name }}
+                        </div>
+                    </td>
+                    <td data-label="Бонусы:">
+                        <div class="buttons nowrap">
+                              {{ user.bonus }} ₽
+                        </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'userchangepage' user.id %}" class="button small blue --jb-modal">
+                          Сбросить пароль
+                        </a>
+                      </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'usereditpage' user.id %}" class="button small blue --jb-modal">
+                          Редактировать
+                        </a>
+                      </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'userdeletepage' user.id %}" class="button small red --jb-modal" >
+                          Удалить
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                <div class="table-pagination">
+
+                </div>
+              </div>
+            </div>
+        </section>
+{% endblock %}

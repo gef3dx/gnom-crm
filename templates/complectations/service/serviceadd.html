@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+ <section class="section main-section">
+    <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            <span class="icon"><i class="mdi mdi-alert-circle-outline"></i></span>
+            Добавить услугу
+          </p>
+        </header>
+        <div class="card-content">
+            <form method="post" enctype="multipart/form-data">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <div class="mx-auto text-right">
+                     <a class="button white border-gray-300" href="javascript:history.back()">Отмена</a>
+                     <button class="button blue " type="submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+</div>
+ </section>
+{% endblock %}

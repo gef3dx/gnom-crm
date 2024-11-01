@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="is-hero-bar">
+  <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <h1 class="title">
+      Комплектации
+    </h1>
+    <a href="{% url 'complectationaddpage' %}" class="button blue">Добавить комплектацию</a>
+  </div>
+</section>
+    {% for complectation in complectations %}
+        <section class="section main-section">
+            <div class="card has-table">
+              <div class="card-content">
+                <table>
+                  <thead>
+                  <tr>
+                    <th>Наименование:</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Баланс:</th>
+                    <th>Процент:</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td class="md:w-72" data-label="Имя:">
+                        <div class="buttons nowrap">
+                            <a class="button light " href="{% url 'productpage' complectation.slug %}">
+                              {{ complectation.name }}
+                            </a>
+                        </div>
+                    </td>
+                    <td data-label=" ">
+                        <div class="buttons nowrap">
+                            <a href="{% url 'receiptspage' complectation.slug %}" class="button light">
+                              Поступления средств
+                            </a>
+                        </div>
+                    </td>
+                    <td data-label=" ">
+                        <div class="buttons nowrap">
+                            <a class="button light " href="{% url 'procurementslistpage' complectation.slug %}">
+                              Закупки
+                            </a>
+                        </div>
+                    </td>
+                    <td data-label=" " >
+                        <div class="buttons nowrap">
+                            <a class="button light " href="{% url 'serviceslistpage' complectation.slug %}">
+                              Услуги
+                            </a>
+                        </div>
+                    </td>
+                    <td data-label="Баланс:">
+{#                        <span class="inline-flex items-center py-2 px-4 rounded-3xl font-semibold bg-red-600 text-white">#}
+{#                            -5000 ₽#}
+{#                        </span>#}
+                        <span class="inline-flex items-center py-2 px-4 rounded-3xl font-semibold bg-green-600 text-white">
+                            +50000000₽
+                        </span>
+                    </td>
+                    <td data-label="Процент:">
+                        <span class="inline-flex items-center py-2 px-4 rounded-3xl font-semibold bg-black text-white">
+                            500000000000₽
+                        </span>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'complectationeditpage' complectation.slug  %}" class="button small blue">
+                          Редактировать
+                        </a>
+                      </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'complectationdeletepage' complectation.slug %}" class="button small red" >
+                          Удалить
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                  <div class="table-pagination">
+
+                </div>
+              </div>
+            </div>
+        </section>
+    {% endfor %}
+{% endblock %}

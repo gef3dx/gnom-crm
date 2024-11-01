@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="is-hero-bar">
+  <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <h1 class="title">
+      Продукты комплектации
+    </h1>
+      {% if products %}
+          <span class="inline-flex items-center px-2 py-1 rounded-md font-semibold bg-black text-white text-base">
+              Итого цена за все: {{sum}} ₽
+          </span>
+          <span class="inline-flex items-center px-2 py-1 rounded-md font-semibold bg-black text-white text-base">
+              Итого предоплата: {{prepayment}} ₽
+          </span>
+          <span class="inline-flex items-center px-2 py-1 rounded-md font-semibold bg-black text-white text-base">
+              Итого остаток: {{remains}} ₽
+          </span>
+     {% endif %}
+          <a href="{% url 'productaddpage' product_id=product_id %}" class="button blue">Добавить продукт</a>
+  </div>
+</section>
+
+    <section class="section main-section">
+        <div class="buttons nowrap mb-4">
+            <a class="button small grey border-gray-300" href="{% url 'productpage' product_slug %}">Все</a>
+            {% for group in groups %}
+                <a class="button small grey border-gray-300" href="{% url 'productgroupage' product_slug group.slug %}">{{group.name}}</a>
+            {% endfor %}
+            <a class="button small red" href="{% url 'productpdfpage' %}">PDF</a>
+            <a class="button small green" href="{% url 'productxlsxpage' %}">XLSX</a>
+        </div>
+        {% if products %}
+            <div class="card has-table">
+              <div class="card-content">
+                <table>
+                  <thead>
+                  <tr>
+                    <th>№:</th>
+                    <th>Картинка:</th>
+                    <th>Наименование:</th>
+                    <th>Дата заказа:</th>
+                    <th>Дата поставки:</th>
+                    <th>Статус товара:</th>
+                    <th>Количество:</th>
+                    <th>Цена:</th>
+                    <th>Цена за все:</th>
+                    <th>Предоплата:</th>
+                    <th>Остаток:</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for product in products %}
+                  <tr>
+                    <td data-label="№:">
+                        <div class="buttons nowrap">
+                              {{forloop.counter}}
+                        </div>
+                    </td>
+                    <td class="w-36" data-label="Картинка:">
+
+                            {% if product.image %}
+                                <img width="100%" class="img-fluid img-thumbnail" src="/media/{{product.image}}" alt="{{product.name}}" />
+                            {% endif %}
+
+                    </td>
+                    <td data-label="Имя:">
+                        <div class="buttons nowrap">
+                             <a class="button white " href="{% url 'productdetelepage' product.id %}">{{ product.name }}</a>
+
+                        </div>
+                    </td>
+                    <td data-label="Дата заказа:">
+                    {% if product.date_order %}
+                        <div class="buttons nowrap">
+                            <span class="
+                                inline-flex
+                                items-center
+                                py-1
+                                px-2
+                                rounded-md
+                                font-semibold
+                                text-white
+                                text-sm
+                                {% if product.status == 'В пути' %}
+                                    {% if product.date_order < date_now %}
+                                        bg-red-600
+                                    {% elif  product.date_order < date_plus %}
+                                        bg-yellow-600
+                                    {% else %}
+                                        bg-green-600
+                                    {% endif %}
+                                {% else %}
+                                    bg-green-600
+                                {% endif %}
+                            ">
+                                {{product.formatted_date_order}}
+                            </span>
+                        </div>
+                    {% endif %}
+                    </td>
+                    <td data-label="Дата поставки:">
+                    {% if product.date_shipment %}
+                        <div class="buttons nowrap">
+                              <span class="
+                                inline-flex
+                                items-center
+                                py-1
+                                px-2
+                                rounded-md
+                                font-semibold
+                                text-white
+                                text-sm
+                                {% if product.status == 'В пути' %}
+                                    {% if product.date_shipment < date_now %}
+                                        bg-red-600
+                                    {% elif  product.date_shipment < date_plus %}
+                                        bg-yellow-600
+                                    {% else %}
+                                        bg-green-600
+                                    {% endif %}
+                                {% else %}
+                                    bg-green-600
+                                {% endif %}
+                            ">
+                                {{product.formatted_date_shipment}}
+                            </span>
+                        </div>
+                    {% endif %}
+                    </td>
+                    <td data-label="Статус товара:">
+                        <div class="buttons nowrap">
+                             <span class="
+                                inline-flex
+                                items-center
+                                py-1
+                                px-2
+                                rounded-md
+                                font-semibold
+                                text-white
+                                text-sm
+                                {% if product.status == 'На складе' %}
+                                        bg-green-500
+                                {% else %}
+                                        bg-slate-500
+                                {% endif %}
+                            ">
+                                {{product.status}}
+                            </span>
+                        </div>
+                    </td>
+                    <td data-label="Количество:">
+                        <div class="buttons nowrap">
+                              {{ product.count }} {{product.meas}}
+                        </div>
+                    </td>
+                    <td data-label="Цена:">
+                        <div class="buttons nowrap">
+                              {{product.price}} ₽
+                        </div>
+                    </td>
+                    <td data-label="Цена за все:">
+                        <div class="buttons nowrap">
+                              {{product.sum_price_count}} ₽
+                        </div>
+                    </td>
+                    <td data-label="Предоплата:">
+                        <div class="buttons nowrap">
+                              {{product.prepayment}} ₽
+                        </div>
+                    </td>
+                    <td data-label="Остаток:">
+                        <div class="buttons nowrap">
+                              {{product.remains}} ₽
+                        </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'producteditpage' product.id %}" class="button small blue">
+                          Редактировать
+                        </a>
+                      </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'productdeletepage'  product.id %}" class="button small red" >
+                          Удалить
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                <div class="table-pagination">
+
+                </div>
+              </div>
+            </div>
+        {% else %}
+            <div class="card empty">
+              <div class="card-content">
+                <div>
+                  <span class="icon large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span>
+                </div>
+                <p>Здесь еще нет записей...</p>
+              </div>
+            </div>
+        {% endif %}
+        </section>
+
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% load static %}
+<aside class="aside is-placed-left is-expanded">
+  <div class="aside-tools">
+    <div>
+       <img src="{% static 'img/gnomlogow.png' %}" width="70">
+    </div>
+  </div>
+  <div class="menu is-menu-main">
+    <p class="menu-label">Основные</p>
+    <ul class="menu-list">
+     <li>
+        <a href="{% url 'homepage' %}">
+          <span class="icon"><i class="mdi mdi-folder"></i></span>
+          <span class="menu-item-label">Комплектации</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'userpage' %}">
+          <span class="icon"><i class="mdi mdi-account-circle"></i></span>
+          <span class="menu-item-label">Пользователи</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'groupage' %}">
+          <span class="icon"><i class="mdi mdi-format-list-group-plus"></i></span>
+          <span class="menu-item-label">Группы</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'providerpage' %}">
+          <span class="icon"><i class="mdi mdi-file-account"></i></span>
+          <span class="menu-item-label">Поставщики</span>
+        </a>
+      </li>
+    </ul>
+    <p class="menu-label">Дополнительные</p>
+    <ul class="menu-list">
+      <li>
+        <a href="index.html">
+          <span class="icon"><i class="mdi mdi-calendar-check"></i></span>
+          <span class="menu-item-label">Задачи</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html">
+          <span class="icon"><i class="mdi mdi-logout"></i></span>
+          <span class="menu-item-label">Выход</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>

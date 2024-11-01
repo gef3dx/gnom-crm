@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="section main-section">
+    <div class="card mb-6">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon"><i class="mdi mdi-delete-alert-outline"></i></span>
+          Удалить продукт
+        </p>
+      </header>
+      <div class="card-content">
+          <div class="mb-4">
+              Вы действительно хотите удалить этот продукт?
+          </div>
+        <form method="post">
+          {% csrf_token %}
+          <div class="field grouped mx-auto text-right">
+            <div class="control">
+              <button type="submit" class="button red">
+                Удалить
+              </button>
+            </div>
+            <div class="control">
+                <a class="button white border-gray-300" href="javascript:history.back()">Отмена</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+{% endblock %}

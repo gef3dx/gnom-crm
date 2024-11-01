@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="is-hero-bar">
+  <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <h1 class="title">
+      Услуги в комплектации "{{ comp_name }}"
+    </h1>
+    {% if services %}
+      <span class="inline-flex items-center px-2 py-1 rounded-md font-semibold bg-black text-white text-base">
+          Итого: {{ price_all }} ₽
+      </span>
+      <span class="inline-flex items-center px-2 py-1 rounded-md font-semibold bg-black text-white text-base">
+          %: {{ price_procent }} ₽
+      </span>
+      <span class="inline-flex items-center px-2 py-1 rounded-md font-semibold bg-black text-white text-base">
+          Итого+%: {{ total_sum }} ₽
+      </span>
+    {% endif %}
+    <a href="{% url 'servicesaddpage' comp_id %}" class="button blue">Добавить закупку</a>
+  </div>
+</section>
+
+<section class="section main-section">
+<form method="post" action="">
+{% csrf_token %}
+  <div class="buttons nowrap mb-4">
+      <a class="button small grey border-gray-300" href="">Все</a>
+    {% if services %}
+      <a class="button small grey border-gray-300" href="">Оплаченные</a>
+      <a class="button small grey border-gray-300" href="">Не оплаченные</a>
+      <a class="button small red" href="">PDF</a>
+      <a class="button small green" href="">XLSX</a>
+      <button type="submit" class="button small blue">Погасить</button>
+    {% endif %}
+  </div>
+
+  {% if services %}
+      {% csrf_token %}
+      <div class="card has-table">
+        <div class="card-content">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" onclick="toggleSelectAll(this)" />
+                </th>
+                <th>№:</th>
+                <th>Наименование:</th>
+                <th>Описание:</th>
+                <th>Смета:</th>
+                <th>Пользователь:</th>
+                <th>Дата:</th>
+                <th>Статус:</th>
+                <th>Количество:</th>
+                <th>Цена-ед:</th>
+                <th>Сумма:</th>
+                <th>Процент:</th>
+                <th>Сумма%:</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for service in services %}
+              <tr>
+                <td data-label="Выбрать">
+                  <input type="checkbox" name="procurement_ids" value="{{ service.id }}" />
+                </td>
+                <td data-label="№:">{{ forloop.counter }}</td>
+                <td data-label="Наименование:">{{ service.name }}</td>
+                <td data-label="Описание:">
+                        {{ service.discription }}
+                </td>
+                <td data-label="Смета xlsx:">
+                    {% if procurement.xlsx_file %}
+                    <a class="text-green-500" href="/media/{{ service.xlsx_file }}">XLSX</a>
+                    {% else %}
+                        <p>Отсутствует</p>
+                    {% endif %}
+                </td>
+                <td data-label="Пользователь:">{{ service.author.email }}</td>
+                <td data-label="Дата:">{{ service.formatted_date_create }}</td>
+                <td data-label="Статус:">
+                     <span class="
+                     inline-flex
+                     items-center
+                     px-2
+                     py-1
+                     rounded-md
+                     font-semibold
+                     {% if service.payment_status == "Оплатил" %}
+                        bg-green-500
+                     {% else %}
+                        bg-red-500
+                     {% endif %}
+                     text-white
+                     text-base">
+                        {{ service.payment_status }}
+                     </span>
+                </td>
+                <td data-label="Количество:">{{ service.count }} {{ service.meas }}</td>
+                <td data-label="Цена-ед:">{{ service.price }} ₽</td>
+                <td data-label="Сумма:">{{ service.price_all }} ₽</td>
+                <td data-label="Процент:">{{ service.procent }} %</td>
+                <td data-label="Сумма%:">{{ service.price_procent }} ₽</td>
+
+                <td class="actions-cell">
+                  <a href="" class="button small blue">Редактировать</a>
+                </td>
+                <td class="actions-cell">
+                  <a href="" class="button small red">Удалить</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="table-pagination"></div>
+        </div>
+      </div>
+    </form>
+  {% else %}
+    <div class="card empty">
+      <div class="card-content">
+        <div>
+          <span class="icon large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span>
+        </div>
+        <p>Здесь еще нет записей...</p>
+      </div>
+    </div>
+  {% endif %}
+</section>
+<script>
+  function toggleSelectAll(source) {
+      checkboxes = document.querySelectorAll('input[name="procurement_ids"]');
+      checkboxes.forEach(checkbox => checkbox.checked = source.checked);
+  }
+</script>
+{% endblock %}

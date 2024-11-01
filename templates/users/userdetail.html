@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+ <section class="section main-section">
+    <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            <span class="icon"><i class="mdi mdi-account"></i></span>
+            Профиль пользователя
+          </p>
+        </header>
+        <div class="card-content">
+          <div class="field">
+            <label class="label">Бонусы</label>
+            <div class="control">
+              <input type="text" readonly="" value="{{ user.bonus }}" class="input is-static">
+            </div>
+          </div>
+          <hr>
+          <div class="field">
+            <label class="label">E-mail</label>
+            <div class="control">
+              <input type="text" readonly="" value="{{ user.email }}" class="input is-static">
+            </div>
+          </div>
+          <hr>
+          <div class="field">
+            <label class="label">Имя</label>
+            <div class="control">
+              <input type="text" readonly="" value="{{ user.first_name }}" class="input is-static">
+            </div>
+          </div>
+          <hr>
+          <div class="field">
+            <label class="label">Фамилия</label>
+            <div class="control">
+              <input type="text" readonly="" value="{{ user.last_name }}" class="input is-static">
+            </div>
+          </div>
+          <hr>
+          <div class="field">
+            <label class="label">Телефон</label>
+            <div class="control">
+              <input type="text" readonly="" value="{{ user.phone }}" class="input is-static">
+            </div>
+          </div>
+          <hr>
+          <div class="field">
+            <label class="label">Роль пользователя</label>
+            <div class="control">
+              <input type="text" readonly="" value="{{ user.role }}" class="input is-static">
+            </div>
+          </div>
+          <hr>
+          <div class="field">
+            <div class="control mx-auto text-right">
+              <a href="{% url 'usereditpage' user.id %}" class=" button blue">Редактировать профиль</a>
+            </div>
+          </div>
+        </div>
+      </div>
+ </section>
+{% endblock %}

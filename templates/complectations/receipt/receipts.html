@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="is-hero-bar">
+  <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <h1 class="title">
+      Поступления в комплектацию "{{ comp_name }}"
+    </h1>
+      {% if receipts %}
+          <span class="inline-flex items-center px-2 py-1 rounded-md font-semibold bg-black text-white text-base">
+              Итого поступило: {{ sum }} ₽
+          </span>
+     {% endif %}
+          <a href="{% url 'receiptsaddpage' product_id=product_id %}" class="button blue">Добавить поступление</a>
+  </div>
+</section>
+
+    <section class="section main-section">
+        <div class="buttons nowrap mb-4">
+            {% if receipts %}
+                <a class="button small red" href="{% url 'receiptspdfpage' comp_slug %}">PDF</a>
+                <a class="button small green" href="{%  url 'receiptsxlsxpage' comp_slug %}">XLSX</a>
+            {% endif %}
+        </div>
+        {% if receipts %}
+            <div class="card has-table">
+              <div class="card-content">
+                <table>
+                  <thead>
+                  <tr>
+                    <th>№:</th>
+                    <th>Наименование:</th>
+                    <th>Пользователь:</th>
+                    <th>Дата поступления:</th>
+                    <th>Сумма поступления:</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for receipt in receipts %}
+                  <tr>
+                    <td data-label="№:">
+                        <div class="buttons nowrap">
+                              {{forloop.counter}}
+                        </div>
+                    </td>
+                    <td data-label="Имя:">
+                        <div class="buttons nowrap">
+                             {{ receipt.name }}
+                        </div>
+                    </td>
+                    <td data-label="Пользователь:">
+                        <div class="buttons nowrap">
+                            {{ receipt.author.email }}
+                        </div>
+                    </td>
+                    <td data-label="Дата поступления:">
+                        <div class="buttons nowrap">
+                                {{receipt.formatted_date_create}}
+                        </div>
+                    </td>
+                    <td data-label="Сумма поступления:">
+                        <div class="buttons nowrap">
+                                {{receipt.price}} ₽
+                        </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'receiptseditpage' receipt.id %}" class="button small blue">
+                          Редактировать
+                        </a>
+                      </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'receiptsdeletepage' receipt.id %}" class="button small red" >
+                          Удалить
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                <div class="table-pagination">
+
+                </div>
+              </div>
+            </div>
+        {% else %}
+            <div class="card empty">
+              <div class="card-content">
+                <div>
+                  <span class="icon large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span>
+                </div>
+                <p>Здесь еще нет записей...</p>
+              </div>
+            </div>
+        {% endif %}
+        </section>
+
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% load static %}
+{% block content %}
+<section class="is-hero-bar">
+  <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <h1 class="title">
+      Поставщики
+    </h1>
+    <a href="{% url 'provideraddpage' %}" class="button blue">Добавить поставщика</a>
+  </div>
+</section>
+
+
+        <section class="section main-section">
+            <div class="card has-table">
+              <div class="card-content">
+                <table>
+                  <thead>
+                  <tr>
+                    <th>Наименование:</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for provider in providers %}
+                  <tr>
+                    <td data-label="Имя:">
+                        <div class="buttons nowrap">
+                              {{ provider.name }}
+                        </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'providereditpage' provider.id %}" class="button small blue">
+                          Редактировать
+                        </a>
+                      </div>
+                    </td>
+                    <td class="actions-cell">
+                      <div class="buttons right nowrap">
+                        <a href="{% url 'providerdeletepage' provider.id %}" class="button small red">
+                          Удалить
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                <div class="table-pagination">
+
+                </div>
+              </div>
+            </div>
+        </section>
+
+
+{% endblock %}
