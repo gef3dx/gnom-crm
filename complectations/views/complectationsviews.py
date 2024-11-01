@@ -86,3 +86,4 @@ class ComplectationViewDelete(DeleteView):
     #         return super().post(request, *args, **kwargs)
     #     else:
     #         return redirect('home')
+
